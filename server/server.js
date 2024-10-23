@@ -5,7 +5,7 @@ const cors = require("cors");
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
-
+const dotenv = require("dotenv");
 const shopProductsRouter = require("./routes/shop/products-routes");
 const shopCartRouter = require("./routes/shop/cart-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
@@ -17,12 +17,21 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
+dotenv.config();
+// mongoose
+//   .connect("db_url")
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((error) => console.log(error));
 
-mongoose
-  .connect("db_url")
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
-
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("mongodb connected successfully.");
+  } catch (error) {
+    console.log(error);
+  }
+};
+connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
